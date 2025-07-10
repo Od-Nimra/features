@@ -1,0 +1,63 @@
+<div class="p-6 sm:p-10 space-y-10">
+
+  <!-- Welcome Message -->
+  <div class="flex justify-between items-center animate-fade-in">
+    <h1 class="text-3xl font-bold text-blue-700">Dashboard</h1>
+    <p class="text-sm sm:text-base text-gray-600">👋 Welcome back, Nimra!</p>
+  </div>
+
+  <!-- Hero / Jumbotron -->
+  <div
+    class="bg-gradient-to-r from-blue-600 to-blue-400 text-white p-6 sm:p-10 rounded-2xl shadow-xl flex flex-col sm:flex-row justify-between items-center gap-6 animate-slide-in-up transition duration-700"
+  >
+    <div>
+      <h2 class="text-3xl sm:text-4xl font-bold mb-2">Welcome to Student Orbit 🎓</h2>
+      <p class="text-lg sm:text-xl opacity-90">Always stay updated with your academics, events & more!</p>
+    </div>
+    <img
+      src="https://pngimg.com/uploads/student/student_PNG62552.png"
+      alt="Students"
+      class="w-48 sm:w-64 drop-shadow-xl transform transition-transform duration-500 hover:scale-105"
+    />
+  </div>
+
+  <!-- Explore Events -->
+  <div class="animate-fade-in-down delay-100">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-xl font-semibold text-blue-800">🎉 Explore Events</h2>
+      <a routerLink="/events" class="text-blue-600 hover:underline text-sm">View All Events</a>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div
+        *ngFor="let event of events"
+        class="bg-white rounded-xl p-5 shadow hover:shadow-md transition-transform duration-300 transform hover:-translate-y-1 hover:scale-105 border border-gray-100"
+      >
+        <h3 class="text-lg font-bold text-gray-800">{{ event.name }}</h3>
+        <p class="text-sm text-gray-600 mt-1">{{ event.date | date:'fullDate' }}</p>
+        <p class="text-sm text-gray-500 mt-1">📍 {{ event.location }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Today's Classes -->
+  <div class="animate-fade-in delay-200">
+    <h2 class="text-xl font-semibold text-blue-800 mb-4">📚 Today’s Classes</h2>
+    <div *ngIf="todaysClasses.length > 0; else noClasses" class="grid gap-3">
+      <div
+        *ngFor="let c of todaysClasses"
+        class="bg-blue-50 p-4 rounded-xl shadow-sm border border-blue-100 transition-transform duration-300 transform hover:scale-[1.01]"
+      >
+        <div class="flex justify-between items-center">
+          <span class="font-semibold text-blue-800">{{ c.course || 'No Class' }}</span>
+          <span class="text-sm text-gray-600">{{ c.hour }}</span>
+        </div>
+        <div *ngIf="c.course" class="text-sm text-gray-700 mt-1">👩‍🏫 {{ c.faculty || 'TBA' }}</div>
+        <div *ngIf="c.course" class="text-sm text-gray-700">🏫 Room {{ c.room || 'N/A' }}</div>
+      </div>
+    </div>
+    <ng-template #noClasses>
+      <p class="text-gray-500 text-sm italic">No classes scheduled for today 🎉</p>
+    </ng-template>
+  </div>
+</div>

@@ -1,0 +1,56 @@
+<div class="p-4">
+  <!-- Header Controls -->
+  <div class="flex flex-wrap justify-between items-center mb-4 gap-2">
+    <div class="flex items-center gap-2">
+      <button (click)="prevMonth()" class="bg-gray-200 hover:bg-gray-300 px-2 py-1 rounded">&larr;</button>
+      <h2 class="text-xl font-bold">
+        {{ months[currentMonth] }} {{ currentYear }}
+      </h2>
+      <button (click)="nextMonth()" class="bg-gray-200 hover:bg-gray-300 px-2 py-1 rounded">&rarr;</button>
+    </div>
+    <div class="flex gap-2">
+      <button (click)="goToToday()" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">Today</button>
+      <button (click)="setView('month')" [class.bg-blue-600]="view === 'month'" class="px-3 py-1 text-sm rounded border text-gray-700 hover:bg-blue-100" [ngClass]="{'text-white': view === 'month', 'bg-white': view !== 'month'}">Month</button>
+      <button (click)="setView('week')" [class.bg-blue-600]="view === 'week'" class="px-3 py-1 text-sm rounded border text-gray-700 hover:bg-blue-100" [ngClass]="{'text-white': view === 'week', 'bg-white': view !== 'week'}">Week</button>
+    </div>
+  </div>
+
+  <!-- Month View -->
+  <div *ngIf="view === 'month'" class="grid grid-cols-7 gap-px bg-gray-300 text-center rounded overflow-hidden animate-slide-in-up">
+    <div *ngFor="let day of dayNames" class="bg-gray-100 text-sm font-medium text-gray-600 p-2">{{ day }}</div>
+    <ng-container *ngFor="let cell of calendarCells">
+      <div class="bg-white p-2 text-sm relative cursor-pointer hover:bg-blue-50" [ngClass]="{'opacity-60': !cell.isCurrentMonth}" (click)="selectDate(cell.date)">
+        <div class="font-semibold">{{ cell.date.getDate() }}</div>
+        <div class="flex flex-wrap gap-1 mt-1">
+          <div *ngFor="let event of getEvents(cell.date)" class="text-xs px-2 py-0.5 rounded-full truncate text-white" [ngClass]="getDotColor(event)">
+            {{ event.title }}
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+
+  <!-- Week View -->
+  <div *ngIf="view === 'week'" class="grid grid-cols-1 sm:grid-cols-7 gap-4 bg-gray-100 rounded overflow-hidden animate-slide-in-up mt-4">
+    <div *ngFor="let day of weekDates" class="bg-white p-4 border rounded shadow">
+      <div class="font-medium mb-2">{{ day.fullDate | date: 'EEE, MMM d' }}</div>
+      <div *ngFor="let event of getEvents(day.fullDate)" class="text-sm bg-green-100 text-green-800 px-2 py-1 rounded mb-1">
+        {{ event.title }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Today's Events Below Calendar -->
+  <div class="mt-8 animate-slide-in-up">
+    <h3 class="text-lg font-semibold mb-3">Events on {{ selectedDate | date: 'fullDate' }}</h3>
+    <div *ngIf="getEvents(selectedDate).length; else noEvents" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div *ngFor="let event of getEvents(selectedDate)" class="p-4 bg-white border-l-4 shadow rounded border-blue-500">
+        <div class="text-blue-800 font-semibold">{{ event.title }}</div>
+        <p class="text-sm text-gray-600">{{ event.description }}</p>
+      </div>
+    </div>
+    <ng-template #noEvents>
+      <p class="text-gray-500">No events for this day.</p>
+    </ng-template>
+  </div>
+</div>

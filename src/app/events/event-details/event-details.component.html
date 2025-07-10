@@ -1,0 +1,93 @@
+<div class="bg-white rounded-2xl shadow-lg p-6 max-w-4xl mx-auto mt-10 relative font-[Poppins,sans-serif] animate-fade-in">
+
+  <!-- Poster Image -->
+  <img src="assets/card1 (1).jpg" alt="Event Poster"
+       class="rounded-xl w-full h-auto object-cover mb-6 shadow-md transition-transform duration-300 hover:scale-105" />
+
+  <!-- Title -->
+  <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-2 leading-snug">
+    10th International Conference on "Sustainable Economic Growth through Digital Revolution"
+  </h1>
+
+  <!-- Subheading -->
+  <p class="text-blue-600 text-sm font-medium mb-4">
+    Department of Commerce - UG
+  </p>
+
+  <!-- Event Info Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-6 mb-6 text-sm text-gray-700">
+  <div class="flex items-start gap-3">
+    <img src="assets/clock-3.png" alt="Time" class="w-5 h-5 mt-1" />
+    <div>
+      <p class="font-semibold">Event Date & Time</p>
+      <p>September 25, 2025 · 9:00 AM – September 26, 2025 · 5:00 PM</p>
+    </div>
+  </div>
+
+  <div class="flex items-start gap-3">
+    <img src="assets/map-pin.png" alt="Location" class="w-5 h-5 mt-1" />
+    <div>
+      <p class="font-semibold">Venue</p>
+      <p>Kristu Jayanti College</p>
+    </div>
+  </div>
+
+  <div class="flex items-start gap-3">
+    <img src="assets/calendar-check-2.png" alt="Register" class="w-5 h-5 mt-1" />
+    <div>
+      <p class="font-semibold">Registration Window</p>
+      <p>Jan 16 – Sep 26, 2025 · 10:00 AM</p>
+    </div>
+  </div>
+</div>
+
+  <!-- Description -->
+  <div class="mb-24">
+    <h2 class="text-lg font-semibold text-gray-800 mb-2">Event Description</h2>
+    <p class="text-gray-700 text-sm leading-relaxed">
+      Join us for an insightful exploration of sustainable economic growth strategies through digital transformation.
+      Industry leaders and academicians will share their experiences and research. Don't miss this opportunity to
+      connect, learn, and grow!
+    </p>
+  </div>
+
+  <!-- RSVP Section -->
+  <div class="absolute bottom-6 right-6">
+    <button 
+      *ngIf="rsvpStatus === 'none'" 
+      (click)="onRsvpClick()" 
+      class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg shadow transition duration-300">
+      RSVP
+    </button>
+
+    <div *ngIf="rsvpStatus === 'going'" class="flex gap-2 items-center">
+      <button class="bg-blue-600 text-white px-6 py-2 rounded-lg shadow" disabled>
+        RSVP'd
+      </button>
+      <button (click)="openEditRsvp()" class="underline text-sm text-blue-600 hover:text-blue-800">Edit RSVP</button>
+    </div>
+  </div>
+
+  <!-- RSVP Confirmation Modal -->
+  <div *ngIf="showGoingModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+    <div class="bg-white p-6 rounded-xl shadow-lg w-[320px] text-center animate-fade-in">
+<img src="assets/circle-check-big.png" alt="Confirmed" class="w-10 h-10 mx-auto mb-2" />
+      <h2 class="font-bold text-xl">You’re Going!</h2>
+      <p class="text-gray-600 text-sm mb-4">Check your email for the RSVP details.</p>
+      <button (click)="confirmRsvp()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded transition">
+        Okay
+      </button>
+    </div>
+  </div>
+
+  <!-- RSVP Edit Modal -->
+  <div *ngIf="showEditModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+    <div class="bg-white p-6 rounded-xl shadow-lg w-[320px] text-center animate-fade-in">
+      <h2 class="font-bold text-xl mb-4">Are you still going?</h2>
+      <div class="flex justify-center gap-4">
+        <button (click)="setEditRsvp('yes')" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Yes</button>
+        <button (click)="setEditRsvp('no')" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">No</button>
+      </div>
+    </div>
+  </div>
+</div>

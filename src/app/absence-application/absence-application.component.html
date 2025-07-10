@@ -1,0 +1,86 @@
+<div class="min-h-screen bg-gradient-to-br from-white via-blue-50 to-white font-[Poppins,sans-serif] py-10 px-4">
+  <div class="max-w-4xl mx-auto bg-white/90 backdrop-blur-md rounded-xl shadow-2xl border border-blue-200 p-6 sm:p-10 space-y-6">
+
+    <!-- Header + Toggle -->
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <h2 class="text-2xl sm:text-3xl font-bold text-blue-800">Absence Application</h2>
+      <div class="inline-flex bg-blue-100 rounded-md p-1">
+        <button (click)="selectedForm = 'leave'" [ngClass]="selectedForm === 'leave' ? 'bg-blue-600 text-white' : 'text-blue-600'" class="px-4 py-1 rounded-md text-sm font-medium transition">Leave</button>
+        <button (click)="selectedForm = 'duty'" [ngClass]="selectedForm === 'duty' ? 'bg-blue-600 text-white' : 'text-blue-600'" class="px-4 py-1 rounded-md text-sm font-medium transition">On-Duty</button>
+      </div>
+    </div>
+
+    <!-- Leave Form -->
+    <div *ngIf="selectedForm === 'leave'" class="space-y-6">
+      <div class="bg-blue-50 p-6 rounded-lg border border-blue-200 space-y-4 text-gray-700">
+        <p>Respected Sir/Madam,</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <input [(ngModel)]="leaveName" placeholder="Your Name" class="w-full border px-3 py-2 rounded-md focus:ring-2 focus:ring-blue-500" />
+          <input [(ngModel)]="leaveClass" placeholder="Class" class="w-full border px-3 py-2 rounded-md focus:ring-2 focus:ring-blue-500" />
+          <input type="date" [(ngModel)]="leaveStart" class="w-full border px-3 py-2 rounded-md focus:ring-2 focus:ring-blue-500" />
+          <input type="date" [(ngModel)]="leaveEnd" class="w-full border px-3 py-2 rounded-md focus:ring-2 focus:ring-blue-500" />
+          <textarea [(ngModel)]="leaveReason" placeholder="Reason" class="sm:col-span-2 border px-3 py-2 rounded-md w-full resize-none focus:ring-2 focus:ring-blue-500"></textarea>
+        </div>
+      </div>
+
+      <!-- File Upload -->
+      <div class="border-2 border-dashed border-blue-400 p-6 rounded-lg text-center cursor-pointer hover:bg-blue-50 transition" (dragover)="onDragOver($event)" (drop)="onFileDrop($event)" (click)="fileInput.click()">
+        <input type="file" hidden #fileInput (change)="onFileSelected($event)" />
+        <div *ngIf="!proofFile" class="text-gray-600">📁 Drag & drop or click to upload</div>
+        <div *ngIf="proofFile" class="text-blue-600">
+          ✅ {{ proofFile.name }}
+          <button (click)="removeFile()" class="ml-4 text-red-500 underline text-sm">Remove</button>
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <div class="flex items-center gap-4">
+        <button [disabled]="!proofFile || loading" (click)="submitLeave()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg shadow-md transition disabled:bg-gray-300 disabled:cursor-not-allowed">
+          Submit Leave Application
+        </button>
+        <div *ngIf="loading" class="loader h-6 w-6"></div>
+      </div>
+    </div>
+
+    <!-- On-Duty Form -->
+    <div *ngIf="selectedForm === 'duty'" class="space-y-6">
+      <div class="bg-blue-50 p-6 rounded-lg border border-blue-200 text-gray-700 space-y-4">
+        <p>Respected Sir/Madam,</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <input [(ngModel)]="dutyName" placeholder="Your Name" class="w-full border px-3 py-2 rounded-md focus:ring-2 focus:ring-blue-500" />
+          <input [(ngModel)]="dutyEvent" placeholder="Event/Competition" class="w-full border px-3 py-2 rounded-md focus:ring-2 focus:ring-blue-500" />
+          <input type="date" [(ngModel)]="dutyDate" class="w-full border px-3 py-2 rounded-md focus:ring-2 focus:ring-blue-500" />
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+          <label *ngFor="let slot of timeSlots" class="flex items-center gap-2">
+            <input type="checkbox" [(ngModel)]="slot.selected" />
+            <span>{{ slot.label }}</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- File Upload -->
+      <div class="border-2 border-dashed border-blue-400 p-6 rounded-lg text-center cursor-pointer hover:bg-blue-50 transition" (dragover)="onDragOver($event)" (drop)="onFileDrop($event)" (click)="fileInput.click()">
+        <input type="file" hidden #fileInput (change)="onFileSelected($event)" />
+        <div *ngIf="!proofFile" class="text-gray-600">📁 Drag & drop or click to upload</div>
+        <div *ngIf="proofFile" class="text-blue-600">
+          ✅ {{ proofFile.name }}
+          <button (click)="removeFile()" class="ml-4 text-red-500 underline text-sm">Remove</button>
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <div class="flex items-center gap-4">
+        <button [disabled]="!proofFile || loading" (click)="submitDuty()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg shadow-md transition disabled:bg-gray-300 disabled:cursor-not-allowed">
+          Submit On-Duty Application
+        </button>
+        <div *ngIf="loading" class="loader h-6 w-6"></div>
+      </div>
+    </div>
+
+    <!-- Toast -->
+    <div *ngIf="showToast" class="fixed top-10 right-10 bg-green-100 text-green-700 px-6 py-3 rounded shadow-lg">
+      ✅ Application submitted successfully!
+    </div>
+  </div>
+</div>
